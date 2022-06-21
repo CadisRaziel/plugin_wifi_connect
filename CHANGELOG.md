@@ -1,4 +1,7 @@
 
+
+## 1.0.2
+* introducing the readme
 ## 1.0.1
 * change mavenCentral to jcenter
 ## 1.0.0

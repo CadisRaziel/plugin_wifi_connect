@@ -2,6 +2,8 @@ import 'dart:async';
 import 'dart:io' show Platform;
 import 'package:flutter/services.dart';
 
+// TODO: Check this lint warning
+// ignore: avoid_classes_with_only_static_members
 class PluginWifiConnect {
   static const MethodChannel _channel = MethodChannel('plugin_wifi_connect');
 
@@ -33,7 +35,9 @@ class PluginWifiConnect {
   /// matching explicitly the [ssid] parameter.
   static Future<bool?> connect(String ssid, {bool saveNetwork = false}) async {
     final bool? connected = await _channel.invokeMethod<bool>(
-        'connect', {'ssid': ssid, 'saveNetwork': saveNetwork});
+      'connect',
+      <String, dynamic>{'ssid': ssid, 'saveNetwork': saveNetwork},
+    );
     return connected;
   }
 
@@ -42,7 +46,9 @@ class PluginWifiConnect {
   static Future<bool?> connectByPrefix(String ssidPrefix,
       {bool saveNetwork = false}) async {
     final bool? connected = await _channel.invokeMethod<bool>(
-        'prefixConnect', {'ssid': ssidPrefix, 'saveNetwork': saveNetwork});
+      'prefixConnect',
+      <String, dynamic>{'ssid': ssidPrefix, 'saveNetwork': saveNetwork},
+    );
     return connected;
   }
 
@@ -54,13 +60,16 @@ class PluginWifiConnect {
       {bool isWep = false,
       bool isWpa3 = false,
       bool saveNetwork = false}) async {
-    final bool? connected = await _channel.invokeMethod<bool>('secureConnect', {
-      'ssid': ssid,
-      'password': password,
-      'saveNetwork': saveNetwork,
-      'isWep': isWep,
-      'isWpa3': isWpa3,
-    });
+    final bool? connected = await _channel.invokeMethod<bool>(
+      'secureConnect',
+      <String, dynamic>{
+        'ssid': ssid,
+        'password': password,
+        'saveNetwork': saveNetwork,
+        'isWep': isWep,
+        'isWpa3': isWpa3,
+      },
+    );
     return connected;
   }
 
@@ -73,14 +82,16 @@ class PluginWifiConnect {
       {bool isWep = false,
       bool isWpa3 = false,
       bool saveNetwork = false}) async {
-    final bool? connected =
-        await _channel.invokeMethod<bool>('securePrefixConnect', {
-      'ssid': ssidPrefix,
-      'password': password,
-      'saveNetwork': saveNetwork,
-      'isWep': isWep,
-      'isWpa3': isWpa3,
-    });
+    final bool? connected = await _channel.invokeMethod<bool>(
+      'securePrefixConnect',
+      <String, dynamic>{
+        'ssid': ssidPrefix,
+        'password': password,
+        'saveNetwork': saveNetwork,
+        'isWep': isWep,
+        'isWpa3': isWpa3,
+      },
+    );
     return connected;
   }
 

@@ -5,10 +5,12 @@ import 'package:flutter/services.dart';
 import 'package:plugin_wifi_connect/plugin_wifi_connect.dart';
 
 void main() {
-  runApp(MyApp());
+  runApp(const MyApp());
 }
 
 class MyApp extends StatefulWidget {
+  const MyApp({Key? key}) : super(key: key);
+
   @override
   _MyAppState createState() => _MyAppState();
 }

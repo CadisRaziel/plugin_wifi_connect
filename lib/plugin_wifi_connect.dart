@@ -16,14 +16,14 @@ class PluginWifiConnect {
   }
 
   /// The [activateWifi] method turns on WiFi only works on android.
-  static Future activateWifi() async {
+  static Future<void> activateWifi() async {
     if (Platform.isAndroid) {
       await _channel.invokeMethod('activateWifi');
     }
   }
 
   /// The [deactivateWifi] method turns off wifi only works on android.
-  static Future deactivateWifi() async {
+  static Future<void> deactivateWifi() async {
     if (Platform.isAndroid) {
       await _channel.invokeMethod('deactivateWifi');
     }
@@ -89,10 +89,10 @@ class PluginWifiConnect {
   static Future<bool?> disconnect() => _channel.invokeMethod('disconnect');
 
   /// register wifi network
-  static Future register() async {}
+  static Future<void> register() async {}
 
   /// unregister wifi network
-  static Future unregister() async {}
+  static Future<void> unregister() async {}
 
   /// The [ssid] getter returns the currently connected ssid.
   static Future<String?> get ssid async {

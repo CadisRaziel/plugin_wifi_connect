@@ -21,7 +21,7 @@ jobs:
         distribution: temurin
     
     # Setup the flutter environment.
-    - uses: subosito/flutter-action@v2.6.2
+    - uses: subosito/flutter-action@v2.7.0
       with:
         channel: 'stable' # 'dev', 'alpha', default to: 'stable'
         cache: true

@@ -1,6 +1,6 @@
 name: plugin_wifi_connect
 description: A low dependency flutter plugin to allow simple connection to wifi devices with the provided ssid or ssid prefix
-version: 1.0.2
+version: 1.0.3
 homepage: https://github.com/CadisRaziel/plugin_wifi_connect
 repository: https://github.com/CadisRaziel/plugin_wifi_connect
 

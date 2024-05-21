@@ -2,7 +2,7 @@
 ## 1.0.3
 * updating lint rules
 * bump gradle to 7.1.2
-* bump kotlin version to 1.6.21
+* bump kotlin version to 1.9.24
 ## 1.0.2
 * introducing the readme
 ## 1.0.1

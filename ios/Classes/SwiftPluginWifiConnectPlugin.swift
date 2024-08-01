@@ -57,6 +57,17 @@ public class SwiftPluginWifiConnectPlugin: NSObject, FlutterPlugin {
           connect(hotspotConfig: hotspotConfig, result: result)
           return
 
+        case "prefixConnect":
+          guard #available(iOS 13.0, *) else {
+            result(FlutterError(code: "iOS must be above 13", message: "Prefix connect doesn't work on iOS pre 13", details: nil))
+            return
+          }
+          let args = try GetArgs(arguments: call.arguments)
+          let hotspotConfig = NEHotspotConfiguration.init(ssidPrefix: args["ssid"] as! String)
+          hotspotConfig.joinOnce = !(args["saveNetwork"] as! Bool);
+          connect(hotspotConfig: hotspotConfig, result: result)
+          return
+
         default:
           result(FlutterMethodNotImplemented)
           return
@@ -127,16 +138,22 @@ public class SwiftPluginWifiConnectPlugin: NSObject, FlutterPlugin {
     return true
   }
 
-  private func getSSID() -> String? {
-    var ssid: String?
-    if let interfaces = CNCopySupportedInterfaces() as NSArray? {
-      for interface in interfaces {
-        if let interfaceInfo = CNCopyCurrentNetworkInfo(interface as! CFString) as NSDictionary? {
-          ssid = interfaceInfo[kCNNetworkInfoKeySSID as String] as? String
-          break
+    private func getSSID() -> String? {
+        var ssid: String?
+        if #available(iOS 14.0, *) {
+            NEHotspotNetwork.fetchCurrent(completionHandler: { currentNetwork in
+                ssid = currentNetwork?.ssid
+            })
+        } else {
+            if let interfaces = CNCopySupportedInterfaces() as NSArray? {
+                for interface in interfaces {
+                    if let interfaceInfo = CNCopyCurrentNetworkInfo(interface as! CFString) as NSDictionary? {
+                        ssid = interfaceInfo[kCNNetworkInfoKeySSID as String] as? String
+                        break
+                    }
+                }
+            }
         }
-      }
+        return ssid
     }
-    return ssid
-  }
 }

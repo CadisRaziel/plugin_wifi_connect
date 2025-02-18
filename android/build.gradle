@@ -25,6 +25,7 @@ apply plugin: 'com.android.library'
 apply plugin: 'kotlin-android'
 
 android {
+    namespace 'com.peakysoftware.plugin_wifi_connect'
     compileSdkVersion 34
 
     compileOptions {

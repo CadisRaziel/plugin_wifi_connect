@@ -117,6 +117,7 @@ class PluginWifiConnectPlugin() : FlutterPlugin, MethodCallHandler {
         val password = call.argument<String>("password")
         val isWep = call.argument<Boolean>("isWep")
         val isWpa3 = call.argument<Boolean>("isWpa3")
+        val isHidden = call.argument<Boolean>("isHidden")
 
         if (ssid == null || password == null || isWep == null) {
           return
@@ -140,6 +141,9 @@ class PluginWifiConnectPlugin() : FlutterPlugin, MethodCallHandler {
                     setWpa3Passphrase(password)
                   } else {
                     setWpa2Passphrase(password)
+                  }
+                  if (isHidden != null && isHidden) {
+                    setIsHiddenSsid(true)
                   }
                 }
                 .build()

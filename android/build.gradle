@@ -25,7 +25,8 @@ apply plugin: 'com.android.library'
 apply plugin: 'kotlin-android'
 
 android {
-    compileSdkVersion 34
+    compileSdkVersion flutter.compileSdkVersion
+    namespace 'com.peakysoftware.plugin_wifi_connect'
 
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8

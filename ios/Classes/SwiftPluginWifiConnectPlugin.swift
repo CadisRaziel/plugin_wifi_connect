@@ -14,11 +14,13 @@ public class SwiftPluginWifiConnectPlugin: NSObject, FlutterPlugin {
     do {
       switch (call.method) {
         case "disconnect":
-          result(disconnect())
+          disconnect(result: result)
           return
 
         case "getSSID":
-          result(getSSID())
+          getSSID { ssid in
+            result(ssid)
+          }
           return
 
         case "connect":
@@ -100,60 +102,63 @@ public class SwiftPluginWifiConnectPlugin: NSObject, FlutterPlugin {
 
   @available(iOS 11, *)
   private func connect(hotspotConfig: NEHotspotConfiguration, result: @escaping FlutterResult) -> Void {
-    NEHotspotConfigurationManager.shared.apply(hotspotConfig) { [weak self] (error) in
-
-      if let error = error as NSError? {
-        switch(error.code) {
-        case NEHotspotConfigurationError.alreadyAssociated.rawValue:
-            result(true)
-            break
-        case NEHotspotConfigurationError.userDenied.rawValue:
-            result(false)
-            break
-        default:
-            result(false)
-            break
+      NEHotspotConfigurationManager.shared.apply(hotspotConfig) { [weak self] (error) in
+          if let error = error as NSError? {
+              switch(error.code) {
+              case NEHotspotConfigurationError.alreadyAssociated.rawValue:
+                  result(true)
+                  break
+              case NEHotspotConfigurationError.userDenied.rawValue:
+                  result(false)
+                  break
+              default:
+                  result(false)
+                  break
+              }
+              return
+          }
+          guard let this = self else {
+              result(false)
+              return
+          }
+          
+          this.getSSID { (ssid) in
+              if let currentSsid = ssid {
+                  result(currentSsid.hasPrefix(hotspotConfig.ssid))
+              } else {
+                  result(false)
+              }
+          }
+      }
+  }
+    
+    @available(iOS 11, *)
+    private func disconnect(result: @escaping FlutterResult) {
+        getSSID { (ssid) in
+            if let ssid {
+                NEHotspotConfigurationManager.shared.removeConfiguration(forSSID: ssid)
+                result(true)
+            } else {
+                result(false)
+            }
         }
-        return
-      }
-      guard let this = self else {
-        result(false)
-        return
-      }
-      if let currentSsid = this.getSSID() {
-        result(currentSsid.hasPrefix(hotspotConfig.ssid))
-        return
-      }
-      result(false)
     }
-  }
-
-  @available(iOS 11, *)   
-  private func disconnect() -> Bool {
-    let ssid: String? = getSSID()
-    if(ssid == nil){
-      return false
-    }
-    NEHotspotConfigurationManager.shared.removeConfiguration(forSSID: ssid ?? "")
-    return true
-  }
-
-    private func getSSID() -> String? {
-        var ssid: String?
+    
+    private func getSSID(result: @escaping (String?) -> ()) {
         if #available(iOS 14.0, *) {
             NEHotspotNetwork.fetchCurrent(completionHandler: { currentNetwork in
-                ssid = currentNetwork?.ssid
+                result(currentNetwork?.ssid) // was broken before, because this happens async
             })
         } else {
             if let interfaces = CNCopySupportedInterfaces() as NSArray? {
                 for interface in interfaces {
                     if let interfaceInfo = CNCopyCurrentNetworkInfo(interface as! CFString) as NSDictionary? {
-                        ssid = interfaceInfo[kCNNetworkInfoKeySSID as String] as? String
-                        break
+                        result(interfaceInfo[kCNNetworkInfoKeySSID as String] as? String)
+                        return
                     }
                 }
             }
+            result(nil)
         }
-        return ssid
     }
 }

@@ -38,7 +38,8 @@ class PluginWifiConnectPlugin() : FlutterPlugin, MethodCallHandler {
 
   // holds the network id returned by WifiManager.addNetwork, required to disconnect (API < 29)
   private var networkId: Int? = null
-
+  private var isTriggered: Boolean = true
+  
   private val connectivityManager: ConnectivityManager by lazy(LazyThreadSafetyMode.NONE) {
     context?.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
   }
@@ -312,8 +313,12 @@ class PluginWifiConnectPlugin() : FlutterPlugin, MethodCallHandler {
 
   @RequiresApi(Build.VERSION_CODES.Q)
   fun connect(@NonNull specifier: WifiNetworkSpecifier, @NonNull result: Result){
+    isTriggered = false
+    
     if (this.networkCallback != null) {
       // there was already a connection, unregister to disconnect before proceeding
+      // Warning: a disconnect should be called in the flutter layer before trying
+      // to connect again to a network, e.i. this piece of code should not be called
       connectivityManager.unregisterNetworkCallback(this.networkCallback!!)
     }
     val request = NetworkRequest.Builder()
@@ -326,13 +331,19 @@ class PluginWifiConnectPlugin() : FlutterPlugin, MethodCallHandler {
       override fun onAvailable(network: Network) {
         super.onAvailable(network)
         connectivityManager.bindProcessToNetwork(network)
-        result.success(true)
+        if(!isTriggered){
+          result.success(true)
+          isTriggered = true
+        }
         // cannot unregister callback here since it would disconnect form the network
       }
 
       override fun onUnavailable() {
         super.onUnavailable()
-        result.success(false)
+        if(!isTriggered){
+          result.success(false)
+          isTriggered = true
+        }
         //connectivityManager.unregisterNetworkCallback(this)
       }
     }

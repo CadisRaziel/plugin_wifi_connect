@@ -33,8 +33,12 @@ public class SwiftPluginWifiConnectPlugin: NSObject, FlutterPlugin {
         case "secureConnect":
           let args = try GetArgs(arguments: call.arguments)
           let hotspotConfig = NEHotspotConfiguration.init(ssid: args["ssid"] as! String, passphrase: args["password"] as! String, isWEP: args["isWep"] as! Bool)
-          hotspotConfig.joinOnce = !(args["saveNetwork"] as! Bool);
-          hotspotConfig.isHidden = args["isHidden"] as! Bool;
+          let saveNetwork = args["saveNetwork"] as? Bool ?? false
+          hotspotConfig.joinOnce = !saveNetwork
+
+          if #available(iOS 13.0, *) {
+            hotspotConfig.hidden = args["isHidden"] as? Bool ?? false
+          }
           connect(hotspotConfig: hotspotConfig, result: result)
           return
 

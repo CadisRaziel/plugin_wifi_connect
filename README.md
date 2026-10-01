@@ -1,7 +1,7 @@
 # 🚀 plugin_wifi_connect
 
 [![pub package](https://img.shields.io/pub/v/plugin_wifi_connect.svg)](https://pub.dev/packages/plugin_wifi_connect)
-[![license](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
+[![license](https://img.shields.io/badge/license-BSD--3--Clause-blue.svg)](LICENSE)
 
 **Flutter connector for Wi‑Fi devices**
 
@@ -62,14 +62,18 @@ flutter pub get
 import 'package:flutter/material.dart';
 import 'package:plugin_wifi_connect/plugin_wifi_connect.dart';
 
-void main() => runApp(MyApp());
+void main() => runApp(const MyApp());
 
 class MyApp extends StatelessWidget {
+  const MyApp({Key? key}) : super(key: key);
+
   @override
-  Widget build(BuildContext context) => MaterialApp(home: HomePage());
+  Widget build(BuildContext context) => const MaterialApp(home: HomePage());
 }
 
 class HomePage extends StatefulWidget {
+  const HomePage({Key? key}) : super(key: key);
+
   @override
   _HomePageState createState() => _HomePageState();
 }
@@ -79,36 +83,48 @@ class _HomePageState extends State<HomePage> {
 
   Future<void> _connectDirect() async {
     try {
-      final ok = await PluginWifiConnect.connectToSsid(
-        ssid: 'MeuDispositivoWiFi',
-        password: 'senha123',
+      final ok = await PluginWifiConnect.connectToSecureNetwork(
+        'MeuDispositivoWiFi',
+        'senha123',
       );
-      setState(() => _status = ok ? 'Conectado' : 'Falha ao conectar');
+      if (!mounted) return;
+      setState(() => _status = ok == true ? 'Conectado' : 'Falha ao conectar');
     } catch (e) {
+      if (!mounted) return;
       setState(() => _status = 'Erro: $e');
     }
   }
 
   Future<void> _connectPrefix() async {
-    final ok = await PluginWifiConnect.connectToSsidPrefix(
-      prefix: 'IoTDevice_',
-      password: 'senhaPadrao',
-    );
-    setState(() => _status = ok ? 'Conectado por prefixo' : 'Não encontrado');
+    try {
+      final ok = await PluginWifiConnect.connectToSecureNetworkByPrefix(
+        'IoTDevice_',
+        'senhaPadrao',
+      );
+      if (!mounted) return;
+      setState(() =>
+          _status = ok == true ? 'Conectado por prefixo' : 'Não encontrado');
+    } catch (e) {
+      if (!mounted) return;
+      setState(() => _status = 'Erro: $e');
+    }
   }
 
   @override
   Widget build(BuildContext context) => Scaffold(
-    appBar: AppBar(title: Text('plugin_wifi_connect example')),
-    body: Center(
-      child: Column(mainAxisSize: MainAxisSize.min, children: [
-        ElevatedButton(onPressed: _connectDirect, child: Text('Conectar SSID')),
-        ElevatedButton(onPressed: _connectPrefix, child: Text('Conectar por Prefixo')),
-        SizedBox(height: 12),
-        Text(_status),
-      ]),
-    ),
-  );
+        appBar: AppBar(title: const Text('plugin_wifi_connect example')),
+        body: Center(
+          child: Column(mainAxisSize: MainAxisSize.min, children: [
+            ElevatedButton(
+                onPressed: _connectDirect, child: const Text('Conectar SSID')),
+            ElevatedButton(
+                onPressed: _connectPrefix,
+                child: const Text('Conectar por Prefixo')),
+            const SizedBox(height: 12),
+            Text(_status),
+          ]),
+        ),
+      );
 }
 ```
 
@@ -126,7 +142,18 @@ Android (adicionar no `AndroidManifest.xml`):
 
 Notas iOS:
 
-- Usa `NEHotspotConfiguration` (iOS 11+). Em geral não são necessárias entitlements especiais, mas documente limitações (ex.: redes com captive portal ou redes gerenciadas por MDM podem não funcionar).
+- No aplicativo consumidor, habilite **Hotspot Configuration** e **Access Wi-Fi Information** em Xcode → Signing & Capabilities. O perfil de provisionamento também precisa incluir essas capabilities.
+- A conexão usa `NEHotspotConfiguration` (iOS 11+); conexões por prefixo exigem iOS 13+. WPA3 (`isWpa3`) é uma opção usada somente pela implementação Android.
+- A leitura do SSID pode retornar `null`, mesmo com os entitlements, quando as condições de acesso do iOS não forem atendidas. Consulte [Hotspot Configuration](https://developer.apple.com/documentation/bundleresources/entitlements/com.apple.developer.networking.hotspotconfiguration) e [fetchCurrent](https://developer.apple.com/documentation/networkextension/nehotspotnetwork/fetchcurrent(completionhandler:)).
+- Valide conexão e leitura do SSID em um iPhone físico; o simulador não valida o funcionamento real do Wi-Fi.
+
+## Integração nativa iOS
+
+O código neste repositório oferece suporte a **CocoaPods e Swift Package Manager**. A versão publicada deve ser conferida separadamente; estas alterações ainda não foram publicadas.
+
+O mínimo declarado pelo plugin permanece iOS 11. A versão do Flutter utilizada pelo aplicativo pode exigir um iOS mais recente. Para validar os dois modos com o exemplo, consulte [example/README.md](example/README.md).
+
+Os métodos de conexão retornam `bool?`: trate `true` como sucesso e `false`/`null` como conexão não confirmada. `register()` e `unregister()` atualmente não executam operações nativas. Os métodos `isEnabled`, `activateWifi()` e `deactivateWifi()` não têm handlers na implementação Android atual e não devem ser usados como operações suportadas.
 
 ---
 
@@ -136,7 +163,3 @@ Notas iOS:
 - CHANGELOG: [CHANGELOG.md](CHANGELOG.md)
 - Report issues: https://github.com/chenrilima/plugin_wifi_connect/issues
 - Contributing: abra um PR ou issue para discutir mudanças.
-
----
-
-Se quiser, eu posso também abrir um PR com este README ou commitar direto no branch `main`.

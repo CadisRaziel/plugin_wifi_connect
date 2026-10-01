@@ -5,15 +5,16 @@
 Pod::Spec.new do |s|
   s.name             = 'plugin_wifi_connect'
   s.version          = '0.0.1'
-  s.summary          = 'Plugin referring to flutter_wifi_connect from our weplenish friends they gave us the permission to continue with the plugin new updates'
+  s.summary          = 'Connect Flutter apps to Wi-Fi networks by SSID or SSID prefix.'
   s.description      = <<-DESC
-Plugin referring to flutter_wifi_connect from our weplenish friends they gave us the permission to continue with the plugin new updates
+A low-dependency Flutter plugin for connecting to open or protected Wi-Fi networks
+by SSID or SSID prefix, based on flutter_wifi_connect.
                        DESC
-  s.homepage         = 'http://example.com'
-  s.license          = { :file => '../LICENSE' }
-  s.author           = { 'Your Company' => 'email@example.com' }
+  s.homepage         = 'https://github.com/chenrilima/plugin_wifi_connect'
+  s.license          = { :type => 'BSD-3-Clause', :file => '../LICENSE' }
+  s.author           = 'Carlos Henrique'
   s.source           = { :path => '.' }
-  s.source_files = 'Classes/**/*'
+  s.source_files = 'plugin_wifi_connect/Sources/plugin_wifi_connect/**/*.{h,m,swift}'
   s.dependency 'Flutter'
   s.platform = :ios, '11.0'
 

@@ -1,3 +1,10 @@
+## 2.0.3
+
+### Alterações locais ainda não publicadas
+* Adicionado suporte Swift Package Manager, preservando CocoaPods e iOS 11.
+* Corrigidos testes de SSID, documentação da API e configuração iOS do exemplo.
+* Explicitada compatibilidade com Dart 3 e atualizados metadados do podspec.
+
 
 ## 2.0.2 - 2026-08-27
 * Pequenas correções e melhorias.

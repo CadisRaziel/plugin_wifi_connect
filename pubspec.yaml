@@ -5,7 +5,7 @@ homepage: https://github.com/chenrilima/plugin_wifi_connect
 repository: https://github.com/chenrilima/plugin_wifi_connect
 
 environment:
-  sdk: ">=2.12.13 <3.0.0"
+  sdk: ">=2.12.13 <4.0.0"
   flutter: ">=1.20.0"
 
 dependencies:

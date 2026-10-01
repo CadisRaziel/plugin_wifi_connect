@@ -1,4 +1,7 @@
 
+## 2.0.2 - 2026-08-27
+* Pequenas correções e melhorias.
+
 ## 1.0.3
 * updating lint rules
 * bump gradle to 7.1.2

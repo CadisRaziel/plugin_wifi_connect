@@ -4,7 +4,7 @@ import PackageDescription
 
 let package = Package(
     name: "plugin_wifi_connect",
-    platforms: [.iOS("11.0")],
+    platforms: [.iOS("12.0")],
     products: [
         .library(name: "plugin-wifi-connect", targets: ["plugin_wifi_connect"])
     ],

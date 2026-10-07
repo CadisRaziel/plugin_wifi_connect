@@ -1,7 +1,8 @@
 ## 2.0.3
 
 ### Alterações locais ainda não publicadas
-* Adicionado suporte Swift Package Manager, preservando CocoaPods e iOS 11.
+* Adicionado suporte Swift Package Manager, preservando CocoaPods.
+* O mínimo do iOS passa de 11.0 para 12.0, o menor alvo aceito pelo Xcode 26. Aplicativos que ainda declaram iOS 11 no Podfile devem elevar para `platform :ios, '12.0'`.
 * Corrigidos testes de SSID, documentação da API e configuração iOS do exemplo.
 * Explicitada compatibilidade com Dart 3 e atualizados metadados do podspec.
 

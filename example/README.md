@@ -12,7 +12,7 @@ flutter test
 
 Para usar um iPhone, escolha sua equipe de assinatura no Xcode e configure o App ID e o perfil de provisionamento com **Hotspot Configuration** e **Access Wi-Fi Information**. O projeto referencia `Runner/Runner.entitlements` nas configurações Debug, Profile e Release. A presença desses entitlements não garante acesso ao SSID em todas as condições do iOS.
 
-O exemplo declara iOS 11, acompanhando o mínimo do plugin. O Flutter atual pode elevar o mínimo do aplicativo durante a compilação; isso não altera o mínimo declarado pelo plugin.
+O exemplo declara iOS 12, acompanhando o mínimo do plugin. O Flutter atual pode elevar o mínimo do aplicativo durante a compilação; isso não altera o mínimo declarado pelo plugin.
 
 ## Validar CocoaPods
 

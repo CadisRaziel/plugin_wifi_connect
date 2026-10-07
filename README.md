@@ -5,11 +5,11 @@
 
 **Flutter connector for Wi‑Fi devices**
 
-Low‑dependency plugin to simplify automatic connection to devices via SSID or SSID prefix. Compatible with **Android 10+ (API 29+)** and **iOS 11+**.
+Low‑dependency plugin to simplify automatic connection to devices via SSID or SSID prefix. Compatible with **Android 10+ (API 29+)** and **iOS 12+**.
 
 **Conector Flutter para dispositivos Wi‑Fi**
 
-Plugin com baixa dependência para facilitar a conexão automática a dispositivos via SSID ou prefixo de SSID. Compatível com **Android 10+ (API 29+)** e **iOS 11+**.
+Plugin com baixa dependência para facilitar a conexão automática a dispositivos via SSID ou prefixo de SSID. Compatível com **Android 10+ (API 29+)** e **iOS 12+**.
 
 ---
 
@@ -44,12 +44,12 @@ flutter pub get
 
 ## 🎯 Features / Funcionalidades
 
-- ✅ Connects to an exact SSID (iOS 11+, Android).
+- ✅ Connects to an exact SSID (iOS 12+, Android).
 - 🔍 Connects to SSIDs that match a prefix (iOS 13+, Android).
 - 📡 Compatible with IoT devices that use unique SSIDs.
 - ⚙️ Efficient strategy on Android: scans and connects by prefix (requires runtime permission `ACCESS_FINE_LOCATION`).
 
-- ✅ Conecta-se a um SSID exato (iOS 11+, Android).
+- ✅ Conecta-se a um SSID exato (iOS 12+, Android).
 - 🔍 Conecta-se a SSIDs que combinam um prefixo (iOS 13+, Android).
 - 📡 Compatível com dispositivos IoT que usam SSIDs únicos.
 - ⚙️ Estratégia eficiente no Android: escaneia e conecta por prefixo (requer permissão em tempo de execução `ACCESS_FINE_LOCATION`).
@@ -151,7 +151,7 @@ Notas iOS:
 
 O código neste repositório oferece suporte a **CocoaPods e Swift Package Manager**. A versão publicada deve ser conferida separadamente; estas alterações ainda não foram publicadas.
 
-O mínimo declarado pelo plugin permanece iOS 11. A versão do Flutter utilizada pelo aplicativo pode exigir um iOS mais recente. Para validar os dois modos com o exemplo, consulte [example/README.md](example/README.md).
+O mínimo declarado pelo plugin é iOS 12. A versão do Flutter utilizada pelo aplicativo pode exigir um iOS mais recente. Para validar os dois modos com o exemplo, consulte [example/README.md](example/README.md).
 
 Os métodos de conexão retornam `bool?`: trate `true` como sucesso e `false`/`null` como conexão não confirmada. `register()` e `unregister()` atualmente não executam operações nativas. Os métodos `isEnabled`, `activateWifi()` e `deactivateWifi()` não têm handlers na implementação Android atual e não devem ser usados como operações suportadas.
 

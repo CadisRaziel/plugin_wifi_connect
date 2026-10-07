@@ -13,7 +13,7 @@ by SSID or SSID prefix, based on flutter_wifi_connect.
   s.homepage         = 'https://github.com/chenrilima/plugin_wifi_connect'
   s.license          = { :type => 'BSD-3-Clause', :file => '../LICENSE' }
   s.author           = 'Carlos Henrique'
-  s.source           = { :path => '.' }
+  s.source           = { :git => 'https://github.com/chenrilima/plugin_wifi_connect.git', :tag => s.version.to_s }
   s.source_files = 'plugin_wifi_connect/Sources/plugin_wifi_connect/**/*.{h,m,swift}'
   s.dependency 'Flutter'
   s.platform = :ios, '12.0'
